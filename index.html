@@ -961,7 +961,7 @@ html:has(#m1-s1c:target) #m1-s1c   { display: block; }
 <!-- MODULE CARDS -->
 <div class="hub-grid">
 
-  <a class="hub-card" href="#page-m1" onclick="if(!window._bdcTraineeName){document.getElementById('reg-modal').classList.add('reg-open');document.getElementById('reg-name').focus();return false;}bdcNav('page-m1');return false;">
+  <a class="hub-card" href="#page-m1" onclick="if(!window._bdcSessionReg){document.getElementById('reg-modal').classList.add('reg-open');document.getElementById('reg-name').focus();return false;}bdcNav('page-m1');return false;">
     <div class="hub-card-label">Module 01</div>
     <h2>Parts Knowledge</h2>
     <p>Learn what brakes, filters, spark plugs, and fluid services actually do — so you can explain it to any customer, in plain language.</p>
@@ -5603,12 +5603,14 @@ window.SIM_CLIP  = SIM_CLIP;
 })(); /* end guided system */
 
 /* ── REGISTRATION ─────────────────────────────────────────────── */
+/* Always require registration each session; pre-fill from localStorage if available */
 (function(){
-  var stored = localStorage.getItem('bdc_name');
-  if(stored){
-    window._bdcTraineeName = stored;
-    window._bdcDealership  = localStorage.getItem('bdc_dealer') || '';
-  }
+  /* Pre-fill form from previous session but do NOT set _bdcTraineeName yet */
+  var prevName   = localStorage.getItem('bdc_name')   || '';
+  var prevDealer = localStorage.getItem('bdc_dealer') || '';
+  if(prevName)   { var n = document.getElementById('reg-name');   if(n) n.value = prevName; }
+  if(prevDealer) { var d = document.getElementById('reg-dealer'); if(d) d.value = prevDealer; }
+  /* _bdcTraineeName intentionally left unset until user submits this session */
 })();
 
 function bdcRegStart(){
@@ -5621,6 +5623,7 @@ function bdcRegStart(){
   }
   window._bdcTraineeName = name;
   window._bdcDealership  = dealer;
+  window._bdcSessionReg  = true;
   localStorage.setItem('bdc_name',   name);
   localStorage.setItem('bdc_dealer', dealer);
   document.getElementById('reg-modal').classList.remove('reg-open');
@@ -5637,7 +5640,7 @@ window.bdcRegStart = bdcRegStart;
 document.addEventListener('click', function(e){
   var card = e.target.closest('a.hub-card[href="#page-m1"]');
   if(!card) return;
-  if(!window._bdcTraineeName){
+  if(!window._bdcSessionReg){
     e.preventDefault(); e.stopImmediatePropagation();
     document.getElementById('reg-modal').classList.add('reg-open');
     document.getElementById('reg-name').focus();
