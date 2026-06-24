@@ -5491,6 +5491,38 @@ window.S         = S;
 
 })(); /* end guided system */
 
+/* ── AUTO-PLAY AUDIO ON FLIP CARDS & HOTSPOT LABELS ─────────── */
+document.addEventListener('click', function(e) {
+
+  /* Flip card — play front or back audio based on resulting state */
+  var fc = e.target.closest('.flip-card');
+  if(fc && !e.target.closest('button')) { /* ignore ▶ ⏸ ⏹ buttons */
+    /* classList.toggle already ran (onclick attr fires first) */
+    var key = fc.classList.contains('flipped')
+      ? fc.dataset.ttsBack
+      : fc.dataset.ttsFront;
+    if(key) bdcPlay(key);
+    return;
+  }
+
+  /* Brake anatomy hotspot labels */
+  var hsLbl = e.target.closest('label.hs-label');
+  if(hsLbl) {
+    var key = HS_CLIP[hsLbl.getAttribute('for')];
+    if(key) bdcPlay(key);
+    return;
+  }
+
+  /* Pad-wear & fluid sim buttons */
+  var simLbl = e.target.closest('label.sim-btn');
+  if(simLbl) {
+    var key = SIM_CLIP[simLbl.getAttribute('for')];
+    if(key) bdcPlay(key);
+    return;
+  }
+
+}, false);
+
 /* ── EMBEDDED VIDEO — click thumbnail to load iframe ── */
 window.ytLoad = function(el, vid) {
   el.innerHTML = '<iframe src="https://www.youtube.com/embed/'+vid+'?autoplay=1&rel=0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen style="width:100%;aspect-ratio:16/9;border:0;border-radius:12px;display:block;"></iframe>';
