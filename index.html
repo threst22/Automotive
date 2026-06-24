@@ -953,7 +953,7 @@ html:has(#m1-s1c:target) #m1-s1c   { display: block; }
 
 <!-- HUB HERO -->
 <div class="hub-hero">
-  <p class="hub-eyebrow">Service BDC &nbsp;·&nbsp; Training Center<a href="#m1-s6" data-bypass="1" onclick="event.preventDefault();event.stopPropagation();window._bypassGuide=true;Object.assign(window.S,{'m1-s1':{done:true},'m1-s1-flip':{done:true},'m1-s1b':{done:true},'m1-s1c':{done:true},'m1-s2':{done:true},'m1-s3':{done:true},'m1-s4':{done:true}});window.save();window.updateBar();bdcNav('m1-s6');setTimeout(function(){bdcBuildQuiz();},400);" style="opacity:0.04;font-size:8px;color:transparent;user-select:none;pointer-events:all;text-decoration:none;" title=""> ·</a></p>
+  <p class="hub-eyebrow">Service BDC &nbsp;·&nbsp; Training Center<a href="#m1-s6" data-bypass="1" onclick="event.preventDefault();event.stopPropagation();window._bypassGuide=true;Object.assign(window.S,{'m1-s1':{done:true},'m1-s1-flip':{done:true},'m1-s1b':{done:true},'m1-s1c':{done:true},'m1-s2':{done:true},'m1-s3':{done:true},'m1-s4':{done:true}});window.save();window.updateBar();document.querySelectorAll('.page-section').forEach(function(s){s.style.display='none';});document.getElementById('page-m1').style.display='block';document.querySelectorAll('#page-m1 .step-section').forEach(function(s){s.style.display='none';});document.querySelectorAll('.m1-guide,.m2-guide').forEach(function(g){g.style.display='none';});document.getElementById('m1-s6').style.display='block';window.scrollTo({top:0});try{history.pushState(null,'','#m1-s6');}catch(e){}setTimeout(function(){bdcBuildQuiz();},300);" style="opacity:0.04;font-size:8px;color:transparent;user-select:none;pointer-events:all;text-decoration:none;" title=""> ·</a></p>
   <h1>Know what you're selling.<br><em>Say it with confidence.</em></h1>
   <p class="hub-sub">Two modules. Everything your team needs to convert declined service calls into booked appointments.</p>
 </div>
@@ -961,7 +961,7 @@ html:has(#m1-s1c:target) #m1-s1c   { display: block; }
 <!-- MODULE CARDS -->
 <div class="hub-grid">
 
-  <a class="hub-card" href="#page-m1" onclick="bdcNav('page-m1'); return false;">
+  <a class="hub-card" href="#page-m1" onclick="if(!window._bdcTraineeName){document.getElementById('reg-modal').classList.add('reg-open');document.getElementById('reg-name').focus();return false;}bdcNav('page-m1');return false;">
     <div class="hub-card-label">Module 01</div>
     <h2>Parts Knowledge</h2>
     <p>Learn what brakes, filters, spark plugs, and fluid services actually do — so you can explain it to any customer, in plain language.</p>
@@ -2378,6 +2378,10 @@ html:has(#m1-s1c:target) #m1-s1c   { display: block; }
   <div id="quiz-score-title" style="font-size:20px;font-weight:800;margin-bottom:6px;"></div>
   <div id="quiz-score-sub" style="font-size:14px;color:#6E6E73;margin-bottom:18px;"></div>
   <div id="quiz-score-btns"></div>
+  <div id="quiz-retake-wrap" style="display:none;margin-top:18px;padding-top:18px;border-top:1px solid #E5E7EB;">
+    <div id="quiz-retake-countdown"><strong id="quiz-retake-timer">5:00</strong><br>Retake available when timer reaches 0:00</div>
+    <button id="quiz-retake-btn" onclick="bdcStartRetake()">🔄 Retake Quiz (New Questions)</button>
+  </div>
 </div>
 
 </div><!-- /sec-body -->
@@ -4609,6 +4613,41 @@ document.addEventListener('DOMContentLoaded', function() {
   padding: 12px 24px; border: none; border-radius: 10px; cursor: pointer;
 }
 
+/* ── WELCOME REGISTRATION MODAL ── */
+#reg-modal {
+  display: none; position: fixed; inset: 0; z-index: 99998;
+  background: rgba(0,0,0,0.88); align-items: center; justify-content: center; padding: 20px;
+}
+#reg-modal.reg-open { display: flex; }
+#reg-inner {
+  background: #fff; border-radius: 18px; max-width: 520px; width: 100%;
+  padding: 40px 44px; text-align: center; box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+}
+#reg-inner h2 { font-size: 24px; font-weight: 800; margin-bottom: 6px; color: #1A1A2E; }
+#reg-inner p  { color: #6E6E73; font-size: 14px; margin-bottom: 24px; }
+.reg-field {
+  width: 100%; font-size: 15px; font-weight: 600; padding: 13px 16px;
+  border: 2px solid #E5E7EB; border-radius: 10px; outline: none;
+  margin-bottom: 14px; box-sizing: border-box; transition: border-color .2s;
+}
+.reg-field:focus { border-color: #0071E3; }
+#reg-start-btn {
+  display: block; width: 100%; background: #0071E3; color: #fff;
+  font-size: 15px; font-weight: 700; padding: 14px 20px; border: none;
+  border-radius: 10px; cursor: pointer; margin-top: 6px; transition: background .2s;
+}
+#reg-start-btn:hover { background: #005BBE; }
+/* ── RETAKE COUNTDOWN ── */
+#quiz-retake-wrap { margin-top: 18px; }
+#quiz-retake-countdown {
+  font-size: 13px; color: #6E6E73; margin-bottom: 10px;
+}
+#quiz-retake-countdown strong { font-size: 18px; color: #C0001A; font-weight: 800; }
+#quiz-retake-btn {
+  display: none; background: #FF9500; color: #fff; font-size: 14px; font-weight: 700;
+  padding: 12px 28px; border: none; border-radius: 10px; cursor: pointer;
+}
+#quiz-retake-btn:hover { background: #E07800; }
 @media print {
   body > *:not(#cert-modal) { display: none !important; }
   #cert-modal { position: static !important; background: none !important; padding: 0 !important; }
@@ -4661,9 +4700,24 @@ document.addEventListener('DOMContentLoaded', function() {
       </div>
     </div>
     <div id="cert-actions" style="display:none;">
+      <div style="width:100%;text-align:center;margin-bottom:14px;background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;padding:10px 14px;font-size:13px;color:#92400E;">
+        📸 <strong>Please take a screenshot of this certificate</strong> and save it for your records.
+      </div>
       <button id="cert-print-btn" onclick="window.print()">⬇ Save as PDF / Print</button>
       <button id="cert-close-btn" onclick="document.getElementById('cert-modal').classList.remove('cert-open')">Close</button>
     </div>
+  </div>
+</div>
+
+<!-- ── REGISTRATION MODAL ── -->
+<div id="reg-modal">
+  <div id="reg-inner">
+    <div style="font-size:44px;margin-bottom:10px;">📋</div>
+    <h2>Before we get started</h2>
+    <p>Enter your info so we can personalize your completion certificate.</p>
+    <input id="reg-name" class="reg-field" type="text" placeholder="Your Full Name" maxlength="60">
+    <input id="reg-dealer" class="reg-field" type="text" placeholder="Dealership Name" maxlength="80">
+    <button id="reg-start-btn" onclick="bdcRegStart()">Let's Go →</button>
   </div>
 </div>
 
@@ -5426,6 +5480,8 @@ document.addEventListener('change', function(e){
   showQuizResult(score, Object.keys(activeCorrect).length);
 });
 
+var _retakeTimer = null;
+
 function showQuizResult(score, total){
   S['m1-s6'] = {done: score >= Math.ceil((window._quizShowCount||10) * 0.9)};
   save(); updateBar();
@@ -5435,7 +5491,6 @@ function showQuizResult(score, total){
   box.style.display = 'block';
   box.style.background = pass ? 'rgba(52,199,89,0.08)' : 'rgba(255,59,48,0.08)';
   box.style.border = '1px solid '+(pass?'rgba(52,199,89,0.3)':'rgba(255,59,48,0.3)');
-  /* On fail — offer a fresh set; on pass — keep existing next-step button */
   document.getElementById('quiz-score-icon').textContent = pass ? '🎉' : '📚';
   document.getElementById('quiz-score-title').style.color = pass ? '#15803D' : '#C0001A';
   document.getElementById('quiz-score-title').textContent = pass
@@ -5443,30 +5498,82 @@ function showQuizResult(score, total){
     : 'Score: '+score+' / '+total+' — need '+Math.ceil(total*0.9)+' to pass ('+Math.round(score/total*100)+'%)';
   document.getElementById('quiz-score-sub').textContent = pass
     ? 'Great work! Your certificate is ready.'
-    : 'Review the questions marked ❌ and try again.';
+    : 'Review the lessons below, then come back to retake.';
   var btns = document.getElementById('quiz-score-btns');
+  var retakeWrap = document.getElementById('quiz-retake-wrap');
+  var retakeBtn  = document.getElementById('quiz-retake-btn');
+  var retakeTimer = document.getElementById('quiz-retake-timer');
   if(pass){
+    if(retakeWrap) retakeWrap.style.display = 'none';
+    if(_retakeTimer){ clearInterval(_retakeTimer); _retakeTimer = null; }
     document.getElementById('cert-score-display').textContent = score+'/'+total;
-    btns.innerHTML = '<button onclick="document.getElementById(\'cert-modal\').classList.add(\'cert-open\')" style="background:#0071E3;color:#fff;font-size:14px;font-weight:700;padding:12px 28px;border:none;border-radius:10px;cursor:pointer;margin-right:10px;">🏆 Get My Certificate</button>'
-      +'<a href="#page-hub" style="display:inline-block;background:#F2F2F7;color:#1C1C1E;font-size:14px;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;">🏠 Back to Hub</a>';
+    /* Auto-show certificate inline */
+    btns.innerHTML = '<button onclick="bdcShowCert()" style="background:#0071E3;color:#fff;font-size:14px;font-weight:700;padding:12px 28px;border:none;border-radius:10px;cursor:pointer;margin-right:10px;">🏆 View My Certificate</button>'
+      +'<a href="#page-hub" onclick="bdcNav(\'page-hub\');return false;" style="display:inline-block;background:#F2F2F7;color:#1C1C1E;font-size:14px;font-weight:600;padding:12px 24px;border-radius:10px;text-decoration:none;">🏠 Back to Hub</a>';
+    /* Auto-open cert */
+    setTimeout(bdcShowCert, 400);
   } else {
-    btns.innerHTML = '<a href="#m1-s1" style="display:inline-block;background:#0071E3;color:#fff;font-size:14px;font-weight:700;padding:12px 28px;border-radius:10px;text-decoration:none;">🔄 Review Lessons</a>';
+    btns.innerHTML = '<a href="#m1-s1" onclick="bdcNav(\'m1-s1\');return false;" style="display:inline-block;background:#0071E3;color:#fff;font-size:14px;font-weight:700;padding:12px 28px;border-radius:10px;text-decoration:none;">📖 Review Lessons</a>';
+    /* Show retake section with 5-min countdown */
+    if(retakeWrap){
+      retakeWrap.style.display = 'block';
+      retakeBtn.style.display  = 'none';
+      var secsLeft = 300; /* 5 minutes */
+      retakeTimer.textContent = '5:00';
+      if(_retakeTimer) clearInterval(_retakeTimer);
+      _retakeTimer = setInterval(function(){
+        secsLeft--;
+        var m = Math.floor(secsLeft/60);
+        var s = secsLeft % 60;
+        retakeTimer.textContent = m+':'+(s<10?'0':'')+s;
+        if(secsLeft <= 0){
+          clearInterval(_retakeTimer); _retakeTimer = null;
+          retakeTimer.textContent = '0:00';
+          document.getElementById('quiz-retake-countdown').textContent = '✅ Ready! Click below to retake with a new set of questions.';
+          retakeBtn.style.display = 'inline-block';
+        }
+      }, 1000);
+    }
   }
   box.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
+function bdcStartRetake(){
+  var retakeWrap = document.getElementById('quiz-retake-wrap');
+  if(retakeWrap) retakeWrap.style.display = 'none';
+  if(_retakeTimer){ clearInterval(_retakeTimer); _retakeTimer = null; }
+  var box = document.getElementById('quiz-score-box');
+  if(box) box.style.display = 'none';
+  bdcBuildQuiz();
+  window.scrollTo({top: document.getElementById('m1-s6').offsetTop - 60, behavior:'smooth'});
+}
+window.bdcStartRetake = bdcStartRetake;
+
 /* ── CERTIFICATE GENERATOR ───────────────────────────────────── */
-window.bdcGenerateCert = function(){
-  var name = (document.getElementById('cert-name-input').value||'').trim();
-  if(!name){ alert('Please enter your name.'); return; }
-  document.getElementById('cert-name-out').textContent = name;
-  var score = document.getElementById('cert-score-display').textContent;
-  var parts = score.split('/'); var num = parseInt(parts[0]||0), den = parseInt(parts[1]||10)||10;
+function bdcShowCert(){
+  var name   = window._bdcTraineeName   || localStorage.getItem('bdc_name')   || '';
+  var dealer = window._bdcDealership    || localStorage.getItem('bdc_dealer') || '';
+  var score  = document.getElementById('cert-score-display').textContent;
+  var parts  = score.split('/');
+  var num = parseInt(parts[0]||0), den = parseInt(parts[1]||10)||10;
+  /* Populate cert fields */
+  document.getElementById('cert-name-out').textContent = name || 'Trainee';
+  var orgEl = document.querySelector('.cert-org');
+  if(orgEl) orgEl.textContent = 'SERVICE BDC — ' + (dealer || 'HYUNDAI DEALERSHIP').toUpperCase();
   document.getElementById('cert-score-out').textContent = '🏆  Final Score: '+score+' ('+Math.round(num/den*100)+'%)';
   document.getElementById('cert-date-out').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
   document.getElementById('cert-name-step').style.display = 'none';
   document.getElementById('cert-preview').style.display   = 'block';
   document.getElementById('cert-actions').style.display   = 'flex';
+  document.getElementById('cert-modal').classList.add('cert-open');
+}
+window.bdcShowCert = bdcShowCert;
+
+window.bdcGenerateCert = function(){
+  var name = (document.getElementById('cert-name-input').value||'').trim();
+  if(!name){ alert('Please enter your name.'); return; }
+  window._bdcTraineeName = name;
+  bdcShowCert();
 };
 
 /* ── AUDIO PLAY HELPER ───────────────────────────────────────── */
@@ -5494,6 +5601,48 @@ window.HS_CLIP   = HS_CLIP;
 window.SIM_CLIP  = SIM_CLIP;
 
 })(); /* end guided system */
+
+/* ── REGISTRATION ─────────────────────────────────────────────── */
+(function(){
+  var stored = localStorage.getItem('bdc_name');
+  if(stored){
+    window._bdcTraineeName = stored;
+    window._bdcDealership  = localStorage.getItem('bdc_dealer') || '';
+  }
+})();
+
+function bdcRegStart(){
+  var name   = (document.getElementById('reg-name').value||'').trim();
+  var dealer = (document.getElementById('reg-dealer').value||'').trim();
+  if(!name){
+    document.getElementById('reg-name').focus();
+    document.getElementById('reg-name').style.borderColor='#C0001A';
+    return;
+  }
+  window._bdcTraineeName = name;
+  window._bdcDealership  = dealer;
+  localStorage.setItem('bdc_name',   name);
+  localStorage.setItem('bdc_dealer', dealer);
+  document.getElementById('reg-modal').classList.remove('reg-open');
+  /* Navigate to Module 1 */
+  document.querySelectorAll('.page-section').forEach(function(s){s.style.display='none';});
+  document.getElementById('page-m1').style.display='block';
+  window.scrollTo({top:0});
+  try{ history.pushState(null,'','#page-m1'); }catch(e){}
+  if(typeof bdcNav === 'function') bdcNav('page-m1');
+}
+window.bdcRegStart = bdcRegStart;
+
+/* Intercept Module 1 hub card — show registration if not yet filled in */
+document.addEventListener('click', function(e){
+  var card = e.target.closest('a.hub-card[href="#page-m1"]');
+  if(!card) return;
+  if(!window._bdcTraineeName){
+    e.preventDefault(); e.stopImmediatePropagation();
+    document.getElementById('reg-modal').classList.add('reg-open');
+    document.getElementById('reg-name').focus();
+  }
+}, true); /* capture — fires before bdcNav anchor interceptor */
 
 /* ── AUTO-PLAY AUDIO ON INTERACTIONS ────────────────────────── */
 
