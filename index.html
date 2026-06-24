@@ -75,20 +75,25 @@ img { max-width: 100%; }
 ══════════════════════════════════════════════════ */
 .top-nav {
   position: sticky; top: 0; z-index: 200;
-  display: flex; align-items: center; gap: 2px;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center;
   padding: 6px 20px;
   background: rgba(255,255,255,0.90);
   backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border);
-  justify-content: center;
 }
+.top-nav-left  { display: flex; align-items: center; justify-content: flex-start; }
+.top-nav-center{ display: flex; align-items: center; gap: 2px; }
+.top-nav-right { display: flex; align-items: center; justify-content: flex-end; }
 #nav-trainee-badge {
-  display: none; position: absolute; left: 16px;
+  display: none;
   flex-direction: column; line-height: 1.3;
+  background: #F0F4FF; border: 1px solid #C7D7FF;
+  border-radius: 8px; padding: 5px 10px;
 }
 #nav-trainee-badge.visible { display: flex; }
-#nav-trainee-name   { font-size: 12px; font-weight: 700; color: var(--ink); }
-#nav-trainee-dealer { font-size: 10px; font-weight: 500; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.04em; }
+#nav-trainee-name   { font-size: 12px; font-weight: 700; color: #1A1A2E; }
+#nav-trainee-dealer { font-size: 10px; font-weight: 500; color: #4B5563; text-transform: uppercase; letter-spacing: 0.04em; }
 .top-nav-btn {
   display: inline-flex; flex-direction: column; align-items: center;
   gap: 2px; padding: 7px 18px; border-radius: var(--r-sm);
@@ -950,14 +955,18 @@ html:has(#m1-s1c:target) #m1-s1c   { display: block; }
 <body>
 
 <nav class="top-nav">
-  <div id="nav-trainee-badge">
-    <span id="nav-trainee-name"></span>
-    <span id="nav-trainee-dealer"></span>
+  <div class="top-nav-left">
+    <div id="nav-trainee-badge">
+      <span id="nav-trainee-name"></span>
+      <span id="nav-trainee-dealer"></span>
+    </div>
   </div>
-  <a class="top-nav-btn active" href="#page-hub" onclick="bdcNav('page-hub'); return false;">🏠<br>Hub</a>
-  <a class="top-nav-btn" href="#page-m1" onclick="bdcNav('page-m1'); return false;">🔩<br>Parts Knowledge</a>
-  <a class="top-nav-btn" href="#page-m2" onclick="bdcNav('page-m2'); return false;">💰<br>Declined Services</a>
-  <!-- myKaarma hidden until ready -->
+  <div class="top-nav-center">
+    <a class="top-nav-btn active" href="#page-hub" onclick="bdcNav('page-hub'); return false;">🏠<br>Hub</a>
+    <a class="top-nav-btn" href="#page-m1" onclick="bdcNav('page-m1'); return false;">🔩<br>Parts Knowledge</a>
+    <a class="top-nav-btn" href="#page-m2" onclick="bdcNav('page-m2'); return false;">💰<br>Declined Services</a>
+  </div>
+  <div class="top-nav-right"></div>
 </nav>
 
 <div class="page-section active" id="page-hub">
