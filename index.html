@@ -5187,6 +5187,7 @@ function completePage(pageId){
 function loadPage(pageId){
   _curPage = pageId; _flipCount=0; _ytCount=0;
   unlockAll(); hideBanner();
+  if(window._bypassGuide){ updateBar(); return; }
   var steps = GUIDE[pageId];
   if(!steps) { updateBar(); return; }
   if(steps.length===0){ updateBar(); return; }
@@ -5521,6 +5522,19 @@ document.addEventListener('click', function(e) {
   if(simLbl) {
     clipKey = (window.SIM_CLIP||{})[simLbl.getAttribute('for')];
     if(clipKey) bdcPlay(clipKey);
+    return;
+  }
+
+  /* Quick-check option labels — play feedback audio on click */
+  var qcLbl = e.target.closest('label[for^="qc"]');
+  if(qcLbl) {
+    var qcOpt = qcLbl.closest('.qc-opt,.qc-correct,.qc-wrong');
+    if(qcOpt) {
+      setTimeout(function(){
+        var fb = qcOpt.querySelector('[data-tts-id]');
+        if(fb && fb.dataset.ttsId) bdcPlay(fb.dataset.ttsId);
+      }, 80);
+    }
     return;
   }
 
