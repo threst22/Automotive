@@ -4465,14 +4465,7 @@ document.addEventListener('DOMContentLoaded', function() {
   padding: 3px 10px; border-radius: 20px; backdrop-filter: blur(6px);
   pointer-events: none;
 }
-#bdc-trainee-label {
-  display: none; position: fixed; top: 38px; right: 14px; z-index: 10003;
-  font-size: 11px; color: #1A1A2E; font-weight: 600; text-align: right;
-  pointer-events: none; line-height: 1.5;
-  background: #fff; border-radius: 6px;
-  padding: 3px 10px; border: 1px solid #D1D5DB;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
+/* bdc-trainee-label styles are inline only */
 
 
 
@@ -4693,7 +4686,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- PROGRESS BAR -->
 <div id="bdc-topbar"><div id="bdc-prog-fill"></div></div>
 <div id="bdc-prog-label">0% Complete</div>
-<div id="bdc-trainee-label" style="display:block;position:fixed;top:38px;right:14px;z-index:10003;font-size:11px;font-weight:600;text-align:right;background:#fff;border:1px solid #D1D5DB;border-radius:6px;padding:3px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);pointer-events:none;">Loading...</div>
 
 <!-- GUIDE BANNER -->
 <div id="bdc-guide-banner" class="bdc-banner-hidden">
@@ -6725,6 +6717,8 @@ document.addEventListener('DOMContentLoaded', function(){
   bdcBuildQuiz();
 });
 </script>
+
+<div id="bdc-trainee-label" style="display:none;position:fixed;top:38px;right:14px;z-index:10003;font-size:11px;font-weight:600;text-align:right;background:#fff;border:1px solid #D1D5DB;border-radius:6px;padding:3px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);pointer-events:none;line-height:1.5;color:#1A1A2E;"></div>
 
 <div id='bdc-audio-pool' style='display:none' aria-hidden='true'>
   <audio id="bdc-audio-bp-rotor" src="audio/bp-rotor.mp3" preload="none" aria-hidden="true"><p style="display:none">Audio not available</p></audio>
